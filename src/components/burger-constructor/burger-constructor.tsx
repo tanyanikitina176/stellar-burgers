@@ -1,13 +1,12 @@
 import { FC, useMemo } from 'react';
 import { TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   clearConstructor,
   constructorSelector
 } from '../../services/slice/constructorSlice';
 import { userSelectorIsAuthenticated } from '../../services/slice/userSlice';
-import { AppDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import {
   clearOrderData,
   orderBurger,
@@ -23,7 +22,7 @@ export const BurgerConstructor: FC = () => {
   const orderRequest = useSelector(orderSelectorRequest);
   const orderModalData = useSelector(orderSelectorData);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onOrderClick = () => {
@@ -33,16 +32,20 @@ export const BurgerConstructor: FC = () => {
     }
     if (!constructorItems.bun || orderRequest) return;
 
-    const ingredientsId = [
+    const ingredientsIds = [
+      constructorItems.bun._id,
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((item) => item._id)
     ];
 
-    dispatch(orderBurger(ingredientsId));
+    dispatch(orderBurger(ingredientsIds))
+      .unwrap()
+      .then(() => {
+        dispatch(clearConstructor());
+      });
   };
   const closeOrderModal = () => {
     dispatch(clearOrderData());
-    dispatch(clearConstructor());
   };
 
   const price = useMemo(

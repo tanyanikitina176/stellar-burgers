@@ -114,11 +114,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    /*authChecked: (state) => {
-      state.isAuthChecked = true;
-    } */
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {

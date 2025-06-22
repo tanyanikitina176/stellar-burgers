@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { RootState } from '../store';
+import { nanoid } from 'nanoid';
 
 interface IBurgerConstructorState {
   bun: TIngredient | null;
@@ -20,7 +21,7 @@ export const constructorSlice = createSlice({
       state.bun = action.payload;
     },
     addIngredient(state, action: PayloadAction<TIngredient>) {
-      const id = action.payload._id + state.ingredients.length;
+      const id = nanoid(10);
       state.ingredients.push({ id, ...action.payload });
     },
     deleteIngredient(state, action: PayloadAction<string>) {

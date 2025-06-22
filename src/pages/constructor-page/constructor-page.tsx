@@ -1,4 +1,4 @@
-import { AppDispatch, useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 
 import styles from './constructor-page.module.css';
 
@@ -10,10 +10,9 @@ import {
   fetchIngredients,
   productSelectorIsLoading
 } from '../../services/slice/productSlice';
-import { useDispatch } from 'react-redux';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
   const isLoading = useSelector(productSelectorIsLoading);
 

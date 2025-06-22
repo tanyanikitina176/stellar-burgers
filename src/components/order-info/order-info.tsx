@@ -2,8 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import {
   getOrderByNumber,
   orderSelectorCurrentOrder
@@ -14,9 +13,9 @@ import {
   productsSelectorIngredients
 } from '../../services/slice/productSlice';
 
-export const OrderInfo: FC = () => {
+export const OrderInfo = ({ showTitle = false }) => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const { number } = useParams<{ number: string }>();
   const orderNumber = Number(number);
   useEffect(() => {
@@ -72,6 +71,5 @@ export const OrderInfo: FC = () => {
   if (!orderInfo) {
     return <Preloader />;
   }
-
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return <OrderInfoUI orderInfo={orderInfo} showTitle={showTitle} />;
 };
