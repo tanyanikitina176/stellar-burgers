@@ -1,0 +1,13 @@
+{
+  "order": {
+    "_id": "1",
+    "status": "done",
+    "name": "Тест",
+    "createdAt": "01.01.2010",
+    "updatedAt": "01.01.2010",
+    "number": 1,
+    "ingredients": ["id-1", "id-2"]
+  },
+  "name": "Тестовый заказ",
+  "success": true
+}
