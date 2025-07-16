@@ -1,3 +1,5 @@
+import { SELECTORS } from '../support/constants';
+
 describe('добавление ингредиентов в конструктор и оформление заказа работает корректно', () => {
   beforeEach(function () {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' }).as(
@@ -11,8 +13,7 @@ describe('добавление ингредиентов в конструкто�
     cy.intercept('POST', 'api/orders', { fixture: 'order.json' }).as(
       'createOrder'
     );
-    cy.viewport(1300, 800);
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
   });
 
   afterEach(() => {
@@ -20,37 +21,27 @@ describe('добавление ингредиентов в конструкто�
     cy.clearCookies();
   });
 
-  const testIngredientAddition = (ingredientsName: string) => {
-    cy.contains('[data-cy="ingredient-item"]', ingredientsName)
-      .find('button')
-      .contains('Добавить')
-      .click();
-    cy.get('[data-cy="constructor-item"]')
-      .contains(ingredientsName)
-      .should('exist');
-  };
-
   it('добавление ингредиентов и оформление заказа корректно', () => {
-    cy.get('[data-cy="ingredient-item"]').should('have.length', 3);
-    testIngredientAddition('Биокотлета');
-    testIngredientAddition('Соус');
-    testIngredientAddition('Краторная булка');
-    cy.contains('[data-cy="button-order"]', 'Оформить заказ').click();
+    cy.get(SELECTORS.INGREDIENT_ITEM).should('have.length', 3);
+    cy.testIngredientAddition('Биокотлета');
+    cy.testIngredientAddition('Соус');
+    cy.testIngredientAddition('Краторная булка');
+    cy.contains(SELECTORS.BUTTON_ORDER, 'Оформить заказ').click();
     cy.getCookie('accessToken').should('exist');
-    cy.get('[data-cy="modal"]').should('be.visible');
+    cy.get(SELECTORS.MODAL).should('be.visible');
     cy.wait('@createOrder').then((interception) => {
       const response = interception.response!;
       const expectedNumber = response.body.order.number;
 
-      cy.get('[data-cy="order-number"]').should(
+      cy.get(SELECTORS.ORDER_NUMBER).should(
         'have.text',
         expectedNumber.toString()
       );
     });
-    cy.get('[data-cy="modal"]').find('button').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
-    cy.get('[data-cy="constructor"]')
+    cy.get(SELECTORS.MODAL).find('button').click();
+    cy.get(SELECTORS.MODAL).should('not.exist');
+    cy.get(SELECTORS.CONSTRUCTOR)
       .children()
-      .should('not.contain', '[data-cy="constructor-item"]');
+      .should('not.contain', SELECTORS.CONSTRUCTOR_ITEM);
   });
 });
