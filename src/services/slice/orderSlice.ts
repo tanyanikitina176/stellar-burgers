@@ -18,7 +18,7 @@ interface TOrderData {
   myOrders: TOrder[];
 }
 
-const initialState: TOrderData = {
+export const initialState: TOrderData = {
   orderModalData: null,
   orderRequest: false,
   orderAll: [],
